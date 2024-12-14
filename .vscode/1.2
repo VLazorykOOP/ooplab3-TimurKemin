@@ -1,0 +1,180 @@
+#include <iostream> 
+#include <iomanip> 
+#include <stdexcept>  
+
+  
+using namespace std; 
+
+  
+class Time { 
+private: 
+
+int hour;  
+
+int minute;  
+
+int second;  
+
+  
+
+public: 
+
+Time() : hour(0), minute(0), second(0) {} 
+
+  
+
+Time(int h, int m, int s) { 
+
+ setTime(h, m, s); 
+
+    } 
+
+  
+
+void setTime(int h, int m, int s) { 
+
+setHour(h); 
+
+setMinute(m); 
+
+setSecond(s); 
+
+    } 
+
+  
+
+    void setHour(int h) { 
+
+        if (h < 0 || h > 23) { 
+
+            throw invalid_argument("Невірна година! Час має бути від 0 до 23."); 
+
+        } 
+
+        hour = h; 
+
+    } 
+
+  
+
+        void setMinute(int m) { 
+
+        if (m < 0 || m > 59) { 
+
+            throw invalid_argument("Невірні хвилини! Хвилини мають бути від 0 до 59."); 
+
+        } 
+
+        minute = m; 
+
+    } 
+
+  
+
+    void setSecond(int s) { 
+
+        if (s < 0 || s > 59) { 
+
+            throw invalid_argument("Невірні секунди! Секунди мають бути від 0 до 59."); 
+
+        } 
+
+        second = s; 
+
+    } 
+
+  
+
+int getHour() const { return hour; } 
+
+int getMinute() const { return minute; } 
+
+int getSecond() const { return second; } 
+
+  
+
+void printTime1() const { 
+
+        cout << getHour() << " годин " << getMinute() << " хвилин " << getSecond() << " секунд" << endl; 
+
+    } 
+
+  
+
+     void printTime2() const { 
+
+        int h = getHour(); 
+
+        string period = (h >= 12) ? "p.m." : "a.m."; 
+
+        if (h > 12) h -= 12; // Перетворюємо на 12-годинний формат 
+
+        if (h == 0) h = 12; // Якщо година 0, то це 12 a.m. 
+
+  
+
+        cout << h << " " << period << " " << getMinute() << " хвилин " << getSecond() << " секунд" << endl; 
+
+    } 
+
+}; 
+
+  
+
+int main() { 
+
+    try { 
+
+               Time t1; 
+
+        cout << "Час за замовчуванням (00:00:00):" << endl; 
+
+        t1.printTime1(); 
+
+        t1.printTime2(); 
+
+        cout << endl; 
+
+  
+
+               Time t2(16, 18, 3); 
+
+        cout << "Заданий час (16:18:03):" << endl; 
+
+        t2.printTime1(); 
+
+        t2.printTime2(); 
+
+        cout << endl; 
+
+  
+
+               Time t3; 
+
+        cout << "Встановимо час 4 год 45 хв 30 с:" << endl; 
+
+        t3.setTime(4, 45, 30); 
+
+        t3.printTime1(); 
+
+        t3.printTime2(); 
+
+        cout << endl; 
+
+  
+
+        cout << "Спробуємо встановити некоректний час (година: 25):" << endl; 
+
+        t3.setHour(25);  // Викличе помилку 
+
+    } catch (const invalid_argument& e) { 
+
+        cout << "Помилка: " << e.what() << endl; 
+
+    } 
+
+  
+
+    return 0; 
+
+} 
